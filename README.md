@@ -46,3 +46,21 @@ Interpretable models such as Logistic Regression combined with Weight of Evidenc
 On the other hand, high-performance models such as Gradient Boosting or XGBoost can capture more complex behavioral patterns and often achieve better predictive accuracy. However, these models are generally more difficult to interpret and may reduce transparency in decision-making.
 
 Choosing the appropriate model therefore requires balancing regulatory compliance, explainability, fairness, and predictive performance based on the business context.
+## Dataset
+
+The dataset used in this project originates from the **Xente Challenge** (Kaggle competition). It can be downloaded from:
+
+https://www.kaggle.com/competitions/xente-challenge/data
+
+**Instructions:**
+1. Sign in to Kaggle (create a free account if needed).
+2. Accept the competition rules.
+3. Download the `transactions.csv` (or provided zip) and place it in the `data/raw/` directory.
+4. Run the preprocessing script `src/preprocess.py` to generate processed files in `data/processed/`.
+
+## Project Conventions
+
+- **Branching:** Use `main` for stable releases. Feature work should be done on `feature/<name>` branches and merged via pull requests.
+- **Coding style:** Follow PEP 8, run `flake8` and `black` before committing. Type hints are encouraged.
+- **Commit messages:** Follow the conventional commits spec (`type(scope): description`).
+- **Testing:** Add unit tests in `tests/` and ensure `pytest` passes locally before CI.
