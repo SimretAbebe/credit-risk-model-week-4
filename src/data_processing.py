@@ -34,6 +34,73 @@ class AggregateFeatureExtractor(BaseEstimator, TransformerMixin):
 
         return customer_features
 
+from sklearn.cluster import KMeans
+
+
+def create_rfm_target(df):
+    """
+    Create an RFM-based proxy target variable.
+    """
+
+    rfm_df = df.copy()
+
+    rfm_df["TransactionStartTime"] = pd.to_datetime(
+        rfm_df["TransactionStartTime"]
+    )
+
+    snapshot_date = (
+        rfm_df["TransactionStartTime"].max()
+        + pd.Timedelta(days=1)
+    )
+
+    rfm = (
+        rfm_df.groupby("CustomerId")
+        .agg(
+            Recency=(
+                "TransactionStartTime",
+                lambda x: (
+                    snapshot_date - x.max()
+                ).days
+            ),
+            Frequency=("TransactionId", "count"),
+            Monetary=("Amount", "sum"),
+        )
+        .reset_index()
+    )
+
+    scaler = StandardScaler()
+
+    rfm_scaled = scaler.fit_transform(
+        rfm[["Recency", "Frequency", "Monetary"]]
+    )
+
+    kmeans = KMeans(
+        n_clusters=3,
+        random_state=42,
+        n_init=10
+    )
+
+    rfm["cluster"] = kmeans.fit_predict(
+        rfm_scaled
+    )
+
+    cluster_summary = (
+        rfm.groupby("cluster")[
+            ["Recency", "Frequency", "Monetary"]
+        ]
+        .mean()
+    )
+
+    high_risk_cluster = (
+        cluster_summary["Frequency"]
+        .idxmin()
+    )
+
+    rfm["is_high_risk"] = (
+        rfm["cluster"] == high_risk_cluster
+    ).astype(int)
+
+    return rfm[["CustomerId", "is_high_risk"]]
 
 def build_pipeline():
     """
@@ -76,5 +143,26 @@ def build_pipeline():
 
 
 if __name__ == "__main__":
-    pipeline = build_pipeline()
-    print("Data processing pipeline created successfully.")
+    
+    raw_data = pd.read_csv(
+        "data/raw/data.csv"
+    )
+
+    rfm_target = create_rfm_target(
+        raw_data
+    )
+
+    processed_data = raw_data.merge(
+        rfm_target,
+        on="CustomerId",
+        how="left"
+    )
+
+    processed_data.to_csv(
+        "data/processed/processed_data.csv",
+        index=False
+    )
+
+    print(
+        "Processed dataset created successfully."
+    )
