@@ -8,3 +8,6 @@ fastapi
 uvicorn
 pydantic
 pytest
+mlflow
+xgboost
+joblib
