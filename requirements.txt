@@ -10,4 +10,5 @@ pydantic
 pytest
 mlflow
 xgboost
+flake8
 joblib
