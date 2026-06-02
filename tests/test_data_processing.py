@@ -1,15 +1,16 @@
 import sys
 import os
 import pandas as pd
-from src.data_processing import (
-    build_pipeline,
-    AggregateFeatureExtractor
-)
 
 sys.path.append(
     os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..")
     )
+)
+
+from src.data_processing import (  # noqa: E402
+    build_pipeline,
+    AggregateFeatureExtractor
 )
 
 
