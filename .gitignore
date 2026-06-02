@@ -5,3 +5,7 @@ venv/
 data/raw/
 data/processed/
 .ipynb_checkpoints/
+# MLflow
+mlruns/
+.vscode
+mlflow.db
