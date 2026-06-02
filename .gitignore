@@ -9,3 +9,4 @@ data/processed/
 mlruns/
 .vscode
 mlflow.db
+.pytest_cache/
