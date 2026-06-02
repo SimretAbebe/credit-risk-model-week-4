@@ -1,5 +1,10 @@
 import sys
 import os
+import pandas as pd
+from src.data_processing import (
+    build_pipeline,
+    AggregateFeatureExtractor
+)
 
 sys.path.append(
     os.path.abspath(
@@ -7,12 +12,6 @@ sys.path.append(
     )
 )
 
-import pandas as pd
-
-from src.data_processing import (
-    build_pipeline,
-    AggregateFeatureExtractor
-)
 
 def test_pipeline_creation():
     """
