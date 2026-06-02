@@ -1,4 +1,11 @@
 from pydantic import BaseModel
 
+
 class PredictionRequest(BaseModel):
-    amount: float
+    Amount: float
+    Value: float
+    PricingStrategy: int
+
+
+class PredictionResponse(BaseModel):
+    risk_probability: float
