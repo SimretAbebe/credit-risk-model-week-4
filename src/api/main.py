@@ -18,7 +18,7 @@ app = FastAPI(
 
 
 class DummyPredictor:
-    """Fallback predictor in case MLflow registry fails/is empty during setup/testing."""
+    """Fallback predictor if MLflow registry is empty/fails."""
     def predict_proba(self, X):
         import numpy as np
         # Return mock probabilities
@@ -42,7 +42,8 @@ try:
         )
         print("Loaded pyfunc model from MLflow model registry.")
 except Exception as e:
-    print("Warning: Could not load model from MLflow registry. Using DummyPredictor fallback.")
+    print("Warning: Could not load model from MLflow registry.")
+    print("Using DummyPredictor fallback.")
     print("Error details:", e)
     model = DummyPredictor()
 

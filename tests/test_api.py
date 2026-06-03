@@ -8,7 +8,7 @@ sys.path.append(
     )
 )
 
-from src.api.main import app
+from src.api.main import app  # noqa: E402
 
 client = TestClient(app)
 

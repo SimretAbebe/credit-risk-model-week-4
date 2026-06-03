@@ -44,16 +44,26 @@ class AggregateFeatureExtractor(BaseEstimator, TransformerMixin):
             transaction_count=("Amount", "count"),
             std_transaction_amount=("Amount", "std"),
         )
-        stats["std_transaction_amount"] = stats["std_transaction_amount"].fillna(0.0)
+        stats["std_transaction_amount"] = (
+            stats["std_transaction_amount"].fillna(0.0)
+        )
         self.customer_stats_ = stats.to_dict(orient="index")
 
         # Calculate global medians for unseen customers at transform time
         if len(stats) > 0:
             self.global_medians_ = {
-                "total_transaction_amount": float(stats["total_transaction_amount"].median()),
-                "average_transaction_amount": float(stats["average_transaction_amount"].median()),
-                "transaction_count": float(stats["transaction_count"].median()),
-                "std_transaction_amount": float(stats["std_transaction_amount"].median()),
+                "total_transaction_amount": float(
+                    stats["total_transaction_amount"].median()
+                ),
+                "average_transaction_amount": float(
+                    stats["average_transaction_amount"].median()
+                ),
+                "transaction_count": float(
+                    stats["transaction_count"].median()
+                ),
+                "std_transaction_amount": float(
+                    stats["std_transaction_amount"].median()
+                ),
             }
         else:
             self.global_medians_ = {
@@ -129,8 +139,12 @@ class WoEEncoder(BaseEstimator, TransformerMixin):
                 n_bad_cat = np.sum((y_arr == 1) & mask)
 
                 # Formula with smoothing
-                p_good = (n_good_cat + self.smoothing) / (n_good_total + 2 * self.smoothing)
-                p_bad = (n_bad_cat + self.smoothing) / (n_bad_total + 2 * self.smoothing)
+                p_good = (n_good_cat + self.smoothing) / (
+                    n_good_total + 2 * self.smoothing
+                )
+                p_bad = (n_bad_cat + self.smoothing) / (
+                    n_bad_total + 2 * self.smoothing
+                )
 
                 woe_map[cat] = float(np.log(p_good / p_bad))
             self.woe_maps_[col] = woe_map

@@ -235,7 +235,13 @@ def main():
 
     # Log Information Values (IV) for categorical features
     print("\nInformation Values (IV) of key categorical features:")
-    categorical_cols = ["ProviderId", "ProductId", "ProductCategory", "ChannelId", "PricingStrategy"]
+    categorical_cols = [
+        "ProviderId",
+        "ProductId",
+        "ProductCategory",
+        "ChannelId",
+        "PricingStrategy"
+    ]
 
     with mlflow.start_run(run_name="InformationValueCalculation"):
         for col in categorical_cols:
@@ -280,7 +286,7 @@ def main():
         print(f"\nLogistic Regression is the best model (F1: {best_f1:.4f}).")
 
     model_uri = f"runs:/{best_run_id}/{best_path}"
-    print(f"Registering model {model_uri} as 'CreditRiskModel' in MLflow Registry...")
+    print(f"Registering model {model_uri} as 'CreditRiskModel'...")
     mlflow.register_model(model_uri, "CreditRiskModel")
 
     print(
