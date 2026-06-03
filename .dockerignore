@@ -1,0 +1,14 @@
+venv/
+.git/
+__pycache__/
+*.pyc
+*.pyo
+mlruns/
+*.db
+.env
+*.log
+notebooks/
+data/
+.dockerignore
+.gitignore
+README.md
